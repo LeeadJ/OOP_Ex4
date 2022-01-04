@@ -9,7 +9,6 @@ class Agent:
         self.dest = int(data['dest'])
         self.speed = float(data['speed'])
         location = str(data['pos']).split(',')
+        self.pos = {float(location[0]), float(location[1]), float(location[2])}
         self.pos = []
-        for n in location:
-            self.pos.append(float(n))
         self.pokemon_list = []

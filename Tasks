@@ -1,0 +1,14 @@
+1) Create Classes:
+    -DiGraph
+    -GraphAlgo
+    -Game
+    -GameAlgo
+
+DiGraph
+    -All this need to do is have the methods for graphs.
+    -Need to recieve a json file and convert the nodes and edges properly.
+
+GraphAlgo
+    -The client class has a get_graph that returns a json file.
+    -We need to load that json string using the load_from_json method.
+    -Don't need the save,plot methods.

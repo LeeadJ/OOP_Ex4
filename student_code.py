@@ -5,14 +5,15 @@ Very simple GUI example for python client to communicates with the server and "p
 """
 from types import SimpleNamespace
 from client import Client
-import subprocess
 import json
 from pygame import gfxdraw
 import pygame
 from pygame import *
+import subprocess
 subprocess.Popen(['powershell.exe', f'java -jar Ex4_Server_v0.0.jar {0}'])
 # init pygame
 WIDTH, HEIGHT = 1080, 720
+
 
 # default port
 PORT = 6666
@@ -82,6 +83,7 @@ client.start()
 The code below should be improved significantly:
 The GUI and the "algo" are mixed - refactoring using MVC design pattern is required.
 """
+
 
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons(),
