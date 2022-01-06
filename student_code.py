@@ -4,6 +4,8 @@ OOP - Ex4
 Very simple GUI example for python client to communicates with the server and "play the game!"
 """
 from types import SimpleNamespace
+
+from GameFunc import Game
 from client import Client
 import json
 from pygame import gfxdraw
@@ -72,18 +74,20 @@ def my_scale(data, x=False, y=False):
 radius = 15
 
 client.add_agent("{\"id\":0}")
-# client.add_agent("{\"id\":1}")
-# client.add_agent("{\"id\":2}")
-# client.add_agent("{\"id\":3}")
+client.add_agent("{\"id\":1}")
+client.add_agent("{\"id\":2}")
+client.add_agent("{\"id\":3}")
 
 # this commnad starts the server - the game is running now
 client.start()
+
 
 """
 The code below should be improved significantly:
 The GUI and the "algo" are mixed - refactoring using MVC design pattern is required.
 """
-
+game = Game()
+game.initialize(client.get_pokemons(), client.get_agents(), client.get_graph())
 
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons(),
@@ -156,13 +160,14 @@ while client.is_running() == 'true':
     clock.tick(60)
 
     # choose next edge
-    for agent in agents:
-        if agent.dest == -1:
-            next_node = (agent.src - 1) % len(graph.Nodes)
-            client.choose_next_edge(
-                '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)+'}')
-            ttl = client.time_to_end()
-            print(ttl, client.get_info())
-
-    client.move()
+    # for agent in agents:
+    #     if agent.dest == -1:
+    #         next_node = (agent.src - 1) % len(graph.Nodes)
+    #         client.choose_next_edge(
+    #             '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)+'}')
+    #         ttl = client.time_to_end()
+    #         print(ttl, client.get_info())
+    #
+    # client.move()
+    game.play(client)
 # game over:

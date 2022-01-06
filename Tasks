@@ -12,3 +12,17 @@ GraphAlgo
     -The client class has a get_graph that returns a json file.
     -We need to load that json string using the load_from_json method.
     -Don't need the save,plot methods.
+
+
+
+print("\t\t\nIteration:", count)
+        for a in game.agent_dict.values():
+            if a.dest == -1:
+                print("Moving Node: %s -> %s" % (game.agent2pokemon()[1][0], game.agent2pokemon()[1][1]))
+                client.choose_next_edge('{"agent_id":%s, "next_node_id":%s}' % (game.agent2pokemon()[0], game.agent2pokemon()[1][1]))
+                client.move()
+                print("Refresh After Move")
+                game.refresh_game(client.get_pokemons(), client.get_agents())
+                print("Agents: ", game.agent_dict)
+                print("Pokemon: ", game.pokemon_list)
+                print("Game Info: ", client.get_info())

@@ -1,6 +1,6 @@
-from src.GraphInterface import GraphInterface
-from src.Edge import *
-from src.Gnode import *
+from GraphInterface import GraphInterface
+from Edge import *
+from Gnode import *
 """This class represents graph."""
 
 class DiGraph(GraphInterface):
