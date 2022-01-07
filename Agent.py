@@ -10,10 +10,8 @@ class Agent:
         self.speed = float(data['speed'])
         location = str(data['pos']).split(',')
         self.pos = (float(location[0]), float(location[1]), float(location[2]))
-        self.pos = []
-        self.pokemon_list = []
+
 
     def __repr__(self):
         return 'ID: %s Value: %s Src: %s Dest: %s ' \
-               'Speed: %s Pos: %s ' \
-               'Pokemons: %s' % (self.id, self.value, self.src, self.dest, self.speed, self.pos, self.pokemon_list)
+               'Speed: %s Pos: %s' % (self.id, self.value, self.src, self.dest, self.speed, self.pos)

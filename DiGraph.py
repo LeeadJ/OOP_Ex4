@@ -115,5 +115,10 @@ class DiGraph(GraphInterface):
             self.mc += 1
             return True
 
+
     def __repr__(self):
         return '|V|=%s , |E|=%s' % (self.v_size(), self.e_size())
+
+
+
+

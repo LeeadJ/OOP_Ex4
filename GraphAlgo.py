@@ -258,3 +258,5 @@ class GraphAlgo(GraphAlgoInterface):
         if path:
             path.insert(0, curr_node)
         return dist[dest] / 1.0, path
+
+

@@ -23,4 +23,4 @@ class Gnode:
         self.tag = 0
 
     def __repr__(self):
-        return '%s: |edges out| %s |edges in| %s' % (self.key, self.edges_out, self.edges_in)
+        return '(Key: %s: Edges Out: %s Edges In: %s Location: %s)' % (self.key, self.edges_out, self.edges_in, self.location)
