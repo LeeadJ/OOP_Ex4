@@ -6,7 +6,7 @@ from time import sleep
 from GUI import GUI
 from GameFunc import *
 import subprocess
-subprocess.Popen(['powershell.exe', f'java -jar Ex4_Server_v0.0.jar {11}'])
+subprocess.Popen(['powershell.exe', f'java -jar Ex4_Server_v0.0.jar {2}'])
 # default port
 PORT = 6666
 # server host (default localhost 127.0.0.1)
