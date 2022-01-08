@@ -20,7 +20,7 @@ from GraphInterface import*
 class GraphAlgo(GraphAlgoInterface):
     """Constructor"""
 
-    def _init_(self, graph: DiGraph = DiGraph()):
+    def __init__(self, graph: DiGraph = DiGraph()):
         self.graph = graph
 
     """This function return the graph on which the algorithm works on."""
