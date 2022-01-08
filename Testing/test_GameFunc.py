@@ -23,7 +23,7 @@ client.start()
 game = Game()
 
 
-class test_GameFunc(TestCase):
+class TestGameFunc(TestCase):
     def init_test(self):
         game.initialize(client.get_pokemons(), client.get_agents(), client.get_graph())
         self.assertEqual(1, len(game.agent_dict))
