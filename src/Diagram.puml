@@ -100,6 +100,12 @@ class TestDiGraph{
 -test_remove_node()
 -test_remove_edge()
 }
+class TestGameFunc{
+-init_test()
+-refresh_test()
+-pokemon_edge_test()
+-agent2pokemon()
+}
 
 class Agent{
 +id : Integer
@@ -212,6 +218,7 @@ GraphAlgo::graph *--> Digraph
 
 TestGraphAlgo ..> GraphAlgo
 TestDiGraph ..> Digraph
+TestGameFunc ..> GameFunc
 
 
 
