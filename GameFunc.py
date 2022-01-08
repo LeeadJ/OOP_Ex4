@@ -110,7 +110,7 @@ class Game:
         # ( agent.id, (pokemon, (TT, (distance, [path]))))
         final_path = agent_to_pokemon[1][1][1][1]
         final_path.append(agent_to_pokemon[1][0].dest)
-        print("FinalPath: ", final_path)
+        # print("FinalPath: ", final_path)
         return agent_to_pokemon[0], final_path
 
     def calculate_dist(self, agent: Agent, pokemon: Pokemon):
