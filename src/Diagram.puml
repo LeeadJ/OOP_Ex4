@@ -1,0 +1,218 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+interface GraphInterface
+interface GraphAlgoInterface
+
+
+
+
+
+class GNode {
++edges_in : Edges
++edges_out : Edges
++key : Integer
++location : Point3D
+}
+
+class Edge {
++Src : Integer
++Weight : Float
++Dest : Integer
+}
+
+class Digraph implements GraphInterface{
++node_map : Dictionary
++edge_map : Dictionary
++mc : Integer
+-v_size()
+-e_size()
+-get_all_v()
+-all_in_edges_of_node()
+-all_out_edges_of_node()
+-get_mc()
+-add_edge()
+-add_node()
+-remove_node()
+-remove_edge()
+}
+
+class GraphAlgo implements GraphAlgoInterface{
++graph : DiGraph
+-get_graph()
+-load_from_json()
+-save_to_json()
+-shortest_path()
+-isConnected()
+-{static}DFS()
+-TSP()
+-tsp_helper()
+-centerPoint()
+-plot_graph()
+-dijkstraAlgo()
+}
+
+interface GraphAlgoInterface {
+-get_graph() : GraphInterface
+-load_from_json() : Boolean
+-save_to_json() : Boolean
+-shortest_path() : (Float, List)
+-TSP() : (List[Integer], Float)
+-centerPoint() : (Integer, Float)
+-plot_graph() : Void
+}
+
+interface GraphInterface{
+-v_size() : Integer
+-e_size() : Integer
+-get_all_v() : Dictionary
+-all_in_edges_of_node() : Dictionary
+-all_out_edges_of_node() : Dictionary
+-get_mc() : Integer
+-add_edge() : Boolean
+-add_node() : Boolean
+-remove_node() : Boolean
+-remove_edge() : Boolean
+}
+
+class TestGraphAlgo{
+-test_get_graph()
+-test_load_from_json()
+-test_save_to_json()
+-test_shortest_path()
+-test_center_point()
+-test_plot_graph()
+-test_tsp()
+-test_dijkstraAlgo()
+-test_runtimer()
+}
+
+class TestDiGraph{
+-test_v_size()
+-test_get_all_v()
+-test_e_size()
+-test_all_in_edges_of_node()
+-test_all_out_edges_of_node()
+-test_get_mc()
+-test_add_edge()
+-test_add_node()
+-test_remove_node()
+-test_remove_edge()
+}
+
+class Agent{
++id : Integer
++values : float
++src : Integer
++dest : Integer
++speed : float
++pos : float
+}
+class Pokemon{
++value : Integer
++type : Integer
++pos : float
++marked : Boolean
++src : Integer
++dest : Integer
+}
+class GameFunc{
++pokemon_list : Tuple
++agent_dict : Dictionary
++moves : Integer
++algo : GraphAlgo
+-initialize()
+-refresh_game()
+-pokemon_edge()
+-agent2pokemon()
+-calculate_dist()
+-play()
+-{static}distance()
+}
+class Client{
+-start_connection() : void
+-__send_message()
+-get_agents()
+-add_agent()
+-get_graph()
+-__get_info()
+-get_pokemons()
+-is_running()
+-time_to_end()
+-__start()
+-stop()
+-move()
+-choose_next_edge()
+-log_in()
+-stop_connection()
+}
+class GUI{
++client : Client
++game : GameFunc
++screen : pygame
++min_x : Float
++max_x : Float
++min_y : Float
++max_y : Float
++agent_button : button
++level_button : button
++time_button : button
++move_button : button
++grade_button : button
++stop_button : button
+-scale()
+-my_scale()
+-drawNode()
+-drawPokemons()
+-drawAgents()
+-draw()
+-draw_button()
+
+}
+class button{
++color : pygame
++x : Integer
++y : Integer
++width : Integer
++height : Integer
++text : String
+-draw()
+-isOver()
+}
+class Ex4Main{
+-main()
+}
+Ex4Main ..> Client
+Ex4Main ..> GUI
+Ex4Main ..> GameFunc
+
+GUI::client*-->Client
+GUI::game*-->GameFunc
+GUI::time_button*-->button
+GUI::move_button*-->button
+GUI::grade_button*-->button
+GUI::stop_button*-->button
+GUI::level_button*-->button
+GUI::agent_button*-->button
+
+GameFunc::pokemon_list*-->Pokemon
+GameFunc::agent_dict*-->Agent
+GameFunc::algo*-->GraphAlgo
+GameFunc ..> Client
+
+GNode::edges_in*--> Edge
+GNode::edges_out*--> Edge
+
+Digraph::node_map*-->GNode::key
+Digraph::edge_map*-->GNode::edges_in
+Digraph::edge_map*-->GNode::edges_out
+
+GraphAlgo::graph *--> Digraph
+
+TestGraphAlgo ..> GraphAlgo
+TestDiGraph ..> Digraph
+
+
+
+@enduml
