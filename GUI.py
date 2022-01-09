@@ -3,7 +3,6 @@ import json
 import pygame
 from pygame import *
 
-import GameFunc
 from client import Client
 from GameFunc import Game
 
@@ -24,24 +23,25 @@ background_gui = image.load(background_pic)
 node_gui = image.load(node_pic)
 node_gui = pygame.transform.scale(node_gui, (50, 50))
 
+"""This is the GUI class"""
+
 
 class GUI:
     def __init__(self, game: Game, client: Client):
         self.client = client
         self.game = game
         self.screen = display.set_mode((WIDTH, HEIGHT), depth=32, flags=RESIZABLE)
-        self.min_x = float('inf')
-        self.max_x = float('-inf')
-        self.min_y = float('inf')
-        self.max_y = float('-inf')
+        self.minX = float('inf')
+        self.maxX = float('-inf')
+        self.minY = float('inf')
+        self.maxY = float('-inf')
         for node in self.game.algo.get_graph().get_all_v().values():
-            x = node.location[0]
-            y = node.location[1]
-            self.min_x = min(self.min_x, x)
-            self.min_y = min(self.min_y, y)
-            self.max_x = max(self.max_x, x)
-            self.max_y = max(self.max_y, y)
-        # //////////////
+            self.minX = min(self.minX, node.location[0])
+            self.minY = min(self.minY, node.location[1])
+            self.maxX = max(self.maxX, node.location[0])
+            self.maxY = max(self.maxY, node.location[1])
+
+        # Adding the buttons for the GUI
         buttonColor = (28, 172, 74)
         buttonWidth = 100
         self.level_button = button(buttonColor, 1, 2, buttonWidth, 20, 'LEVEL')
@@ -51,78 +51,96 @@ class GUI:
         self.grade_button = button(buttonColor, 401, 2, buttonWidth, 20, 'GRADE')
         self.stop_button = button(buttonColor, 930, 640, buttonWidth, 20, 'Click to STOP')
 
+    """The scale and my_scale functions will scale the GUI to fit the screen properly"""
+
     def scale(self, data, min_screen, max_screen, min_data, max_data):
         return ((data - min_data) / (max_data - min_data)) * (max_screen - min_screen) + min_screen
 
     def my_scale(self, data, x=False, y=False):
         if x:
-            return self.scale(data, 50, self.screen.get_width() - 50, self.min_x, self.max_x)
+            return self.scale(data, 50, self.screen.get_width() - 50, self.minX, self.maxX)
         if y:
-            return self.scale(data, 50, self.screen.get_height() - 50, self.min_y, self.max_y)
+            return self.scale(data, 50, self.screen.get_height() - 50, self.minY, self.maxY)
 
-    def drawNode(self):
-        for n in self.game.algo.get_graph().get_all_v().values():
-            x = self.my_scale(n.location[0], x=True)
-            y = self.my_scale(n.location[1], y=True)
-            self.screen.blit(node_gui, (x, y))
+    """This function draws the given game graph"""
 
-    def drawEdges(self):
+    def drawGraph(self):
         graph = self.game.algo.get_graph()
+        # loop through the nodes in the graph
         for node in self.game.algo.get_graph().get_all_v().values():
+            # loop the all the out-nodes in the graph
             for out_node in self.game.algo.get_graph().all_out_edges_of_node(node.key):
                 src_node = node
+                # scaling the src x and y and the dest x and y
                 src_x = self.my_scale(src_node.location[0], x=True) + radius / 2
                 src_y = self.my_scale(src_node.location[1], y=True) + radius / 2
                 dest_x = self.my_scale(graph.node_map.get(out_node).location[0], x=True) + radius / 2
                 dest_y = self.my_scale(graph.node_map.get(out_node).location[1], y=True) + radius / 2
+
+                # drawing the edge to the GUI
                 pygame.draw.line(self.screen, Color(61, 72, 126), (src_x, src_y), (dest_x, dest_y), 5)
 
-    def drawPokemons(self):
+        # loop through all the nodes in the graph
+        for n in graph.get_all_v().values():
+            self.screen.blit(node_gui, (self.my_scale(n.location[0], x=True), self.my_scale(n.location[1], y=True)))
+
+    """This function draws the Objects (Pokemon, Agents) to the GUI"""
+
+    def Object_drawer(self):
+        # loop through the pokemons in the game
         for pokemon in self.game.pokemon_list:
+            # scaling the pokemon position
             x = self.my_scale(pokemon.pos[0], x=True)
             y = self.my_scale(pokemon.pos[1], y=True)
             self.screen.blit(pokemon_gui, (x, y))
 
-    def drawAgents(self):
+        # looping through the agents in the game
         for a in self.game.agent_dict.values():
+            # scaling the agents in the game
             x = self.my_scale(a.pos[0], x=True) - radius / 2
             y = self.my_scale(a.pos[1], y=True) - radius / 2
             self.screen.blit(agent_gui, (x, y))
 
+    """This function draws the buttons to the GUI"""
+    def draw_button(self) -> None:
+        # loading the json file and converting it to a dict:
+        info = json.loads(self.client.get_info())["GameServer"]
+        self.agent_button.text = 'AGENTS: ' + str(info['agents'])
+        self.agent_button.draw(self.screen, (0, 0, 0))
+        self.level_button.text = 'LEVEL: ' + str(info['game_level'])
+        self.level_button.draw(self.screen, (0, 0, 0))
+        self.move_button.text = 'MOVES: ' + str(info['moves'])
+        self.move_button.draw(self.screen, (0, 0, 0))
+        self.time_button.text = 'TIME: ' + str(int(float(self.client.time_to_end()) / 1000))
+        self.time_button.draw(self.screen, (0, 0, 0))
+        self.grade_button.text = 'GRADE: ' + str(info["grade"])
+        self.grade_button.draw(self.screen, (0, 0, 0))
+        self.stop_button.draw(self.screen, (0, 0, 0))
+
+    """This function draws all the functions each iteration to the GUI. Returns true id succesful"""
+
     def draw(self) -> bool:
+        # scaling the background image
         background_image = transform.scale(background_gui, (self.screen.get_width(), self.screen.get_height()))
         self.screen.blit(background_image, [0, 0])
+        # checking if the event is not QUIT
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit(0)
                 return False
+            # if clicked on the stop button
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.stop_button.isOver(mouse.get_pos()):
                     pygame.quit()
                     exit(0)
                     return False
-        self.drawEdges()
-        self.drawNode()
-        self.drawPokemons()
-        self.drawAgents()
+        self.drawGraph()
         self.draw_button()
+        self.Object_drawer()
         display.update()
         return True
 
-    def draw_button(self) -> None:
-        self.stop_button.draw(self.screen, (0, 0, 0))
-        data = json.loads(self.client.get_info())["GameServer"]
-        self.agent_button.text = 'AGENTS: ' + str(data['agents'])
-        self.agent_button.draw(self.screen, (0, 0, 0))
-        self.level_button.text = 'LEVEL: ' + str(data['game_level'])
-        self.level_button.draw(self.screen, (0, 0, 0))
-        self.move_button.text = 'MOVES: ' + str(data['moves'])
-        self.move_button.draw(self.screen, (0, 0, 0))
-        self.time_button.text = 'TIME: ' + str(int(float(self.client.time_to_end()) / 1000))
-        self.time_button.draw(self.screen, (0, 0, 0))
-        self.grade_button.text = 'GRADE: ' + str(data["grade"])
-        self.grade_button.draw(self.screen, (0, 0, 0))
 
 
 

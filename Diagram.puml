@@ -161,10 +161,10 @@ class GUI{
 +client : Client
 +game : GameFunc
 +screen : pygame
-+min_x : Float
-+max_x : Float
-+min_y : Float
-+max_y : Float
++minX : Float
++maxX : Float
++minY : Float
++maxY : Float
 +agent_button : button
 +level_button : button
 +time_button : button
@@ -173,9 +173,8 @@ class GUI{
 +stop_button : button
 -scale()
 -my_scale()
--drawNode()
--drawPokemons()
--drawAgents()
+-drawGraph()
+-Object_drawer()
 -draw()
 -draw_button()
 
